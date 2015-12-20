@@ -1,46 +1,45 @@
 #include <bits/stdc++.h>
 
 using namespace std;
+typedef long long ll;
+
+const int N = 51;
+
+struct node {
+	ll num, tot;
+};
+
+node data[N];
 
 int main() {
 	int t;
 	scanf("%d", &t);
-	int f[60];
 	int CASE = 1;
-
 	while (t--) {
+		for (int i = 1; i < N; i++) {
+			data[i].num = data[i].tot = 0;
+		}
 		int n;
+	   	ll tmp;
 		scanf("%d", &n);
-		memset(f, 0, sizeof(f));
-		for (int i = 0; i < n; i++) {
-			scanf("%d", f + i);
-		}
-		sort(f, f + n);f[n] = -1;
-
-		int ans = 0;
-		int tmp = f[0];
-		int tcnt = 0;
-
-		for (int i = 0; i <= n; i++) {
-			if (tmp == f[i]){
-				tcnt ++;
-			}
-			else {
-				if (tcnt > tmp + 1) {
-					ans += (tcnt / (tmp + 1) + (tcnt % (tmp + 1) != 0)) * (tmp + 1);
+		for (int i = 1; i <= n; i++) {
+			scanf("%lld", &tmp);
+			tmp += 1;
+			for (int j = 1; j < N; j++) {
+				if (data[j].num == tmp || data[j].num == 0){
+					data[j].num = tmp;
+					data[j].tot ++;
+					break;
 				}
-				else {
-					ans += tmp + 1;
-				}
-				
-				tmp = f[i];
-				tcnt = 1;
 			}
-
 		}
+		ll ans = 0;
+		for (int j = 1; j < N; j++) {
+			if (data[j].num == 0) break;
+			ans += (data[j].tot / data[j].num + (ll)(data[j].tot % data[j].num != 0) ) * data[j].num;
+		}
+		printf("Case %d: %lld\n", CASE++, ans);
 
-		printf("Case %d: %d\n", CASE++, ans);
 	}
-
 	return 0;
 }
